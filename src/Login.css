@@ -1,0 +1,34 @@
+.search {
+    text-align: center;
+    padding: 20px;
+    background-color:white;
+    color:black;
+    width:max-content;
+    margin:auto;
+    border: 3px;
+    border-style:ridge;
+    top:50%;
+    margin-top: 15%;
+}
+
+form {
+    font-size:x-large;
+    padding: 10px;
+    text-align: end;
+}
+h3 {
+    margin: 0%;
+    padding: 10px;
+}
+
+button {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    font-size: large;
+}
+
+input {
+    margin-left: 5px;
+    width: 50%;
+    text-align: justify;
+}

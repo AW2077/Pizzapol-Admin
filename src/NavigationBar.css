@@ -1,0 +1,48 @@
+#pizza-icon {
+    width: 48px; height: 48px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px 30px 25px 20px ; /*top right bottom left*/
+    overflow: hidden;
+    background-color: var(--primary);
+    border-radius: 30px;
+  }
+  
+.logo {
+    font-family: 'Agbalumo';
+    font-weight: 700;
+    font-size: 4.210rem;
+    vertical-align: middle; /* Align with elements on the right */
+    line-height: 50px; /* Match the height of the elements on the right */
+}
+  
+.header-right {
+    float:right;
+    display: flex; /* Align items within header-right using flexbox */
+    line-height: 32px; /* Match the height of the elements on the right */
+    
+}
+
+  li {
+    float: left;
+
+  }
+  
+  li a {
+    display: block;
+    color: var(--text);
+    text-align: center;
+    padding: 16px 12px 8px 12px;
+    text-decoration: none;
+    font-size: 24px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition-duration: 0.4s;
+  }
+  
+  li a:hover {
+    color: (var(--text));
+    filter: invert(100);}
