@@ -1,18 +1,37 @@
-import React, { Component} from 'react';
+import { DataContext } from './DataProvider.js';
+import React, { useRef, useContext, useEffect, useState} from 'react';
 import './Makeline.css'
+import { json } from 'react-router-dom';
 
 const Makeline = () =>{
-    return (
-        
-    <div>
-      <table>
-        <tr><th>Order ID</th><th>Items</th><th>Status</th><th>Age</th><th>Wait</th><th>Adress</th></tr>
-        <tr><td>2137</td><td>margerita</td><td>oven</td><td>06:09</td><td>04:20</td><td>ul. Jana Pawła 2</td></tr>
-        <tr><td>2137</td><td>margerita</td><td>oven</td><td>06:09</td><td>04:20</td><td>ul. Jana Pawła 2</td></tr>
-        <tr><td>2137</td><td>margerita</td><td>oven</td><td>06:09</td><td>04:20</td><td>ul. Jana Pawła 2</td></tr>
-        <tr><td>2137</td><td>margerita</td><td>oven</td><td>06:09</td><td>04:20</td><td>ul. Jana Pawła 2</td></tr>
+  const { ordersStatus } = useContext(DataContext);
+  const ordersInPreparation = ordersStatus.preparation;
 
-      </table>
+    return (
+      <div>
+      {ordersInPreparation.map((order, index) => (
+        <div key={index}>
+          <h3>Order {index + 1}</h3>
+          <p>Address: {order.address}</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              {order.content.map((item, i) => (
+                <tr key={i}>
+                  <td>{item.name}</td>
+                  <td>{item.quantity}</td>
+                </tr>
+              ))}
+              <button>✓</button>
+            </tbody>
+          </table>
+        </div>
+      ))}
     </div>
 
       );

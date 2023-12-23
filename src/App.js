@@ -5,12 +5,31 @@ import Login from './Login';
 import Panel from './Panel';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebaseConfig';
+import dotenv from 'dotenv';
+import "firebase/firestore";
+import { DataProvider } from './DataProvider';
 
+
+
+ dotenv.config();
+
+ const firebaseConfig = {
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
+};
 // import dotenv from 'dotenv';
 // dotenv.config();
 
+
+
+
 function App() {
-  const [authenticated, setAuthenticated] = useState(false);
+    const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -28,20 +47,22 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/login"
-          element={authenticated ? <Navigate to="/panel" /> : <Login />}
-        />
-        <Route
-          path="/panel"
-          element={authenticated ? <Panel /> : <Navigate to="/login" />}
-        />
-        <Route index element={<Navigate to="/login" />} />
-      </Routes>
-    </Router>
+    <DataProvider>
+      <Router>
+        <Routes>
+          <Route
+            path="/login"
+            element={authenticated ? <Navigate to="/panel" /> : <Login />}
+            />
+          <Route
+            path="/panel"
+            element={authenticated ? <Panel /> : <Navigate to="/login" />}
+            />
+          <Route index element={<Navigate to="/login" />} />
+        </Routes>
+      </Router>
+    </DataProvider>
   );
-}
+};
 
 export default App;

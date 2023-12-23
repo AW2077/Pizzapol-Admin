@@ -8,7 +8,7 @@ const Login = () => {
   return (
     <div>
       <SignIn/>
-      <SignUp/>
+      {/* <SignUp/> */}
     </div>
   );
 };
