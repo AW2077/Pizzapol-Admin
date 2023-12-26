@@ -16,6 +16,9 @@ const DataProvider = ({children}) => {
             const ordersData = await ordersResponse.json();
 
             setOrdersStatus(ordersData);
+            localStorage.removeItem('orderStatus');
+            localStorage.setItem('ordersStatus', JSON.stringify(ordersData));
+
         } catch (error) {
             console.log('error fetching orders', error);
         }

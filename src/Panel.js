@@ -33,11 +33,12 @@ class App extends Component {
   // Renderowanie NavigationBar i aktywnego komponentu
   render() {
     const { activeComponent: ActiveComponent } = this.state;
+
     return (
       <div>
         <NavigationBar handleLinkClick={this.handleLinkClick} />
         {ActiveComponent && <ActiveComponent />}
-        <button onClick={this.handleSignOut}>Sign Out</button>
+        <button onClick={this.handleSignOut}> Sign Out</button>
       </div>
     );
   }
