@@ -38,8 +38,11 @@ class App extends Component {
       <div>
         <NavigationBar handleLinkClick={this.handleLinkClick} />
         {ActiveComponent && <ActiveComponent />}
+
+        {this.state.activeComponent == null &&
         <button onClick={this.handleSignOut}> Sign Out</button>
-      </div>
+        }
+        </div>
     );
   }
 }

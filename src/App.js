@@ -7,7 +7,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebaseConfig';
 import dotenv from 'dotenv';
 import "firebase/firestore";
-import { DataProvider } from './DataProvider';
+
 
 
 
@@ -47,7 +47,6 @@ function App() {
   }, []);
 
   return (
-    <DataProvider>
       <Router>
         <Routes>
           <Route
@@ -61,7 +60,6 @@ function App() {
           <Route index element={<Navigate to="/login" />} />
         </Routes>
       </Router>
-    </DataProvider>
   );
 };
 

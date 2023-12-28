@@ -31,4 +31,30 @@ button:hover {color:var(--text)!important;background-color:var(--secondary)!impo
     font-size: 30px;
   }
 
+.checked {
+  border-style: dashed;
+}
 
+.assign-orders{
+  float: right;
+  padding: 50px;
+}
+
+input[type=button]{
+  height: 50px;
+  width: 100px;
+}
+
+select{
+  height: 50px;
+  width: 100px;
+}
+
+.order-list{
+  float: left;
+  width: 800px;
+}
+
+.driver-list{
+  float: right;
+}
