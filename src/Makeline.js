@@ -1,28 +1,22 @@
 import React, { useRef, useContext, useEffect, useState} from 'react';
 import './Makeline.css'
 import { json } from 'react-router-dom';
+import { useSharedData } from './SharedDataProvider';
 
 const Makeline = () =>{
   const [ordersInPreparation, setOrdersInPreparation] = useState([]);
   
+  const { storeName, updateStoreName } = useSharedData();
 
   useEffect(() => {
     fetchOrders();
   }, []);
 
   const fetchOrders = async () =>{
-    // try {
-    //     const ordersResponse = await fetch('https://fetchorders-ovvvjoo5mq-uc.a.run.app');
-    //     const ordersData = await ordersResponse.json();
-
-    //     setOrdersInPreparation(ordersData.preparation);
-    // } catch (error) {
-    //     console.log('error fetching orders', error);
-    // }
 
     try{
       const xhr = new XMLHttpRequest();
-      const body = {status: "preparation"};
+      const body = {status: "preparation", district: storeName};
           xhr.open("POST", "https://fetchorders-ovvvjoo5mq-uc.a.run.app");
           xhr.setRequestHeader("Access-Control-Allow-Origin", "https://fetchorders-ovvvjoo5mq-uc.a.run.app");
           xhr.setRequestHeader("Access-Control-Allow-Headers", "origin, x-requested-with, content-type");
@@ -48,7 +42,7 @@ const Makeline = () =>{
 
   const updateFirestore = async (orderId) =>{
     const body = [{
-        district: "Ochota",
+        district: storeName,
         orderId: orderId,
         newStatus: "cooking",
         driver: ""
@@ -86,7 +80,8 @@ const Makeline = () =>{
       {ordersInPreparation.map((order, index) => (
         <div key={index}>
           <h3>Order {order.orderId}</h3>
-          <p>Address: {order.address}</p>
+          <p>Address: {order.address.street} {order.address.number}</p>
+          <p>Customer phone number: {order.address.phone}</p>
           <table>
             <thead>
               <tr>

@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import './App.css';
 import Login from './Login';
 import Panel from './Panel';
-import { onAuthStateChanged } from 'firebase/auth';
+import { signOut, getAuth, onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebaseConfig';
 import dotenv from 'dotenv';
 import "firebase/firestore";
+import { SharedDataProvider } from './SharedDataProvider';
 
 
 
@@ -32,7 +33,11 @@ function App() {
     const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
+    const auth = getAuth();
+    signOut(auth);
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log(user);
       if (user) {
         setAuthenticated(true); // User is signed in
       } else {
@@ -47,6 +52,7 @@ function App() {
   }, []);
 
   return (
+    <SharedDataProvider>
       <Router>
         <Routes>
           <Route
@@ -60,6 +66,7 @@ function App() {
           <Route index element={<Navigate to="/login" />} />
         </Routes>
       </Router>
+    </SharedDataProvider>
   );
 };
 

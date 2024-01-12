@@ -1,8 +1,10 @@
 import React, { Component, useEffect, useState} from 'react';
 import './Dispatch.css'
 import { doc, or, updateDoc } from 'firebase/firestore';
+import { useSharedData } from './SharedDataProvider';
 
 const Dispatch = () =>{
+    const { storeName, updateStoreName } = useSharedData();
 
     const [ordersReady, setOrdersReady] = useState([]);
     const [ordersInDelivery, setOrdersInDelivery] = useState([]);
@@ -25,7 +27,7 @@ const Dispatch = () =>{
         const body = [];
         orders.forEach(element =>{
             body.push({
-                district: "Ochota",
+                district: storeName,
                 orderId: element.orderId,
                 newStatus: status,
                 driver: element.driver
@@ -65,7 +67,7 @@ const Dispatch = () =>{
     const fetchOrders = async (status) =>{
         try{
           const xhr = new XMLHttpRequest();
-          const body = {status: status};
+          const body = {status: status, district: storeName};
               xhr.open("POST", "https://fetchorders-ovvvjoo5mq-uc.a.run.app");
               xhr.setRequestHeader("Access-Control-Allow-Origin", "https://fetchorders-ovvvjoo5mq-uc.a.run.app");
               xhr.setRequestHeader("Access-Control-Allow-Headers", "origin, x-requested-with, content-type");
@@ -176,7 +178,8 @@ const Dispatch = () =>{
             {ordersReady.map((order, index) =>(
                 <div key={index} onClick={() => handleOrderClick(order, index)}>
                     <h5>Order: {order.orderId}</h5>
-                    <p>Address: {order.address}</p> 
+                    <p>Address: {order.address.street} {order.address.number}</p> 
+                    <p>Customer phone number: {order.address.phone}</p> 
                 </div>
             ))}
         </div>
