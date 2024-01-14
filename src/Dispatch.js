@@ -1,10 +1,9 @@
-import React, { Component, useEffect, useState} from 'react';
+import React, { useEffect, useState, useCallback} from 'react';
 import './Dispatch.css'
-import { doc, or, updateDoc } from 'firebase/firestore';
 import { useSharedData } from './SharedDataProvider';
 
 const Dispatch = () =>{
-    const { storeName, updateStoreName } = useSharedData();
+    const { storeName } = useSharedData();
 
     const [ordersReady, setOrdersReady] = useState([]);
     const [ordersInDelivery, setOrdersInDelivery] = useState([]);
@@ -15,13 +14,39 @@ const Dispatch = () =>{
     const [availableDrivers, setAvailableDrivers] = useState([]);
     const [allDrivers, setAllDrivers] = useState([]);
 
-    useEffect(() => {
+    const fetchOrders = useCallback(async (status) => {
+        try {
+          const xhr = new XMLHttpRequest();
+          const body = { status: status, district: storeName };
+          xhr.open("POST", "https://fetchorders-ovvvjoo5mq-uc.a.run.app");
+          xhr.setRequestHeader("Access-Control-Allow-Origin", "https://fetchorders-ovvvjoo5mq-uc.a.run.app");
+          xhr.setRequestHeader("Access-Control-Allow-Headers", "origin, x-requested-with, content-type");
+          xhr.setRequestHeader("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+          xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+    
+          xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 201) {
+              const ordersData = JSON.parse(xhr.responseText);
+              if (status === "cooking") { setOrdersReady(ordersData) };
+              if (status === "delivery") { setOrdersInDelivery(ordersData) };
+            } else {
+              console.log(`Error: ${xhr.status}, Details: ${xhr.responseText}`);
+            }
+          };
+          xhr.send(JSON.stringify(body));
+    
+        } catch (error) {
+          console.log('error fetching orders');
+        }
+      }, [storeName]);
+    
+      useEffect(() => {
         setAllDrivers(["Adam", "Marek", "Staś"]);
         setAvailableDrivers(["Adam", "Marek", "Staś"]);
         setDriver("Adam");
         fetchOrders("cooking");
         fetchOrders("delivery");
-    }, []);
+      }, [fetchOrders]);
 
     const updateFirestore = async (orders, status) =>{
         const body = [];
@@ -52,45 +77,6 @@ const Dispatch = () =>{
         xhr.send(JSON.stringify(body));
       }
 
-    // const fetchOrders = async () =>{
-    //     try {
-    //         const ordersResponse = await fetch('https://fetchorders-ovvvjoo5mq-uc.a.run.app');
-    //         const ordersData = await ordersResponse.json();
-
-    //         setOrdersReady(ordersData.cooking);
-    
-    //     } catch (error) {
-    //         console.log('error fetching orders', error);
-    //     }
-    // };
-
-    const fetchOrders = async (status) =>{
-        try{
-          const xhr = new XMLHttpRequest();
-          const body = {status: status, district: storeName};
-              xhr.open("POST", "https://fetchorders-ovvvjoo5mq-uc.a.run.app");
-              xhr.setRequestHeader("Access-Control-Allow-Origin", "https://fetchorders-ovvvjoo5mq-uc.a.run.app");
-              xhr.setRequestHeader("Access-Control-Allow-Headers", "origin, x-requested-with, content-type");
-              xhr.setRequestHeader("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
-              xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-              
-              xhr.onload = () => {
-                  if (xhr.readyState === 4 && xhr.status === 201) {
-                      const ordersData = JSON.parse(xhr.responseText);
-                    
-                      if(status == "cooking"){setOrdersReady(ordersData)};
-                      if(status == "delivery"){setOrdersInDelivery(ordersData)};
-                  } else {
-                      console.log(`Error: ${xhr.status}, Details: ${xhr.responseText}`);
-                  }
-              };
-              xhr.send(JSON.stringify(body));
-          
-          } catch (error){
-            console.log('error fetching orders');
-          }
-      };
-
     const handleOrderClick = (order, index) =>{
         
         const updatedSelectedOrders = [...selectedOrders];
@@ -102,7 +88,6 @@ const Dispatch = () =>{
         }
         
         setSelectedOrders(updatedSelectedOrders);
-        
     }
 
     const handleDriverChange = (event) => {
@@ -114,7 +99,7 @@ const Dispatch = () =>{
         const driverChosen = obj.options[obj.selectedIndex].text;
 
         
-        if(selectedOrders.length == 0){
+        if(selectedOrders.length === 0){
             alert("Select at least one order!");
             return;
         }
@@ -154,7 +139,7 @@ const Dispatch = () =>{
 
         const ordersToMarkFinished = [];
         ordersInDelivery.forEach(order => {
-            if(order.driver == driverChosen){
+            if(order.driver === driverChosen){
                 ordersToMarkFinished.push(order);
 
             }
@@ -188,7 +173,7 @@ const Dispatch = () =>{
                 <label >Driver: </label>
                 <select id="driverChosen" onChange={handleDriverChange} >
                     {allDrivers.map((driver, index) => (
-                        <option value={index}>{driver}</option>
+                        <option key={index} value={index}>{driver}</option>
                     ))}
                 </select> 
                 <button onClick={() => dispatchTheDriver(driver)}>Out!</button>

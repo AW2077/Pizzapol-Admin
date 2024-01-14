@@ -8,13 +8,14 @@ export const useSharedData = () => {
 
 export const SharedDataProvider = ({ children }) => {
   const [storeName, setStoreName] = useState();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const updateStoreName = (newValue) => {
     setStoreName(newValue);
   };
 
   return (
-    <SharedDataContext.Provider value={{ storeName, updateStoreName }}>
+    <SharedDataContext.Provider value={{ storeName, updateStoreName, isAuthenticated, setIsAuthenticated  }}>
       {children}
     </SharedDataContext.Provider>
   );

@@ -1,44 +1,38 @@
-import React, { useRef, useContext, useEffect, useState} from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './Makeline.css'
-import { json } from 'react-router-dom';
 import { useSharedData } from './SharedDataProvider';
 
 const Makeline = () =>{
   const [ordersInPreparation, setOrdersInPreparation] = useState([]);
-  
-  const { storeName, updateStoreName } = useSharedData();
+  const { storeName } = useSharedData();
+
+  const fetchOrders = useCallback(async () => {
+    try {
+      const xhr = new XMLHttpRequest();
+      const body = { status: 'preparation', district: storeName };
+      xhr.open('POST', 'https://fetchorders-ovvvjoo5mq-uc.a.run.app');
+      xhr.setRequestHeader('Access-Control-Allow-Origin', 'https://fetchorders-ovvvjoo5mq-uc.a.run.app');
+      xhr.setRequestHeader('Access-Control-Allow-Headers', 'origin, x-requested-with, content-type');
+      xhr.setRequestHeader('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+      xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+
+      xhr.onload = () => {
+        if (xhr.readyState === 4 && xhr.status === 201) {
+          const ordersData = JSON.parse(xhr.responseText);
+          setOrdersInPreparation(ordersData);
+        } else {
+          console.log(`Error: ${xhr.status}, Details: ${xhr.responseText}`);
+        }
+      };
+      xhr.send(JSON.stringify(body));
+    } catch (error) {
+      console.log('error fetching orders');
+    }
+  }, [storeName]);
 
   useEffect(() => {
     fetchOrders();
-  }, []);
-
-  const fetchOrders = async () =>{
-
-    try{
-      const xhr = new XMLHttpRequest();
-      const body = {status: "preparation", district: storeName};
-          xhr.open("POST", "https://fetchorders-ovvvjoo5mq-uc.a.run.app");
-          xhr.setRequestHeader("Access-Control-Allow-Origin", "https://fetchorders-ovvvjoo5mq-uc.a.run.app");
-          xhr.setRequestHeader("Access-Control-Allow-Headers", "origin, x-requested-with, content-type");
-          xhr.setRequestHeader("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
-          xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-          
-          xhr.onload = () => {
-              if (xhr.readyState === 4 && xhr.status === 201) {
-                  const ordersData = JSON.parse(xhr.responseText);
-                  setOrdersInPreparation(ordersData);
-              } else {
-                  console.log(`Error: ${xhr.status}, Details: ${xhr.responseText}`);
-              }
-          };
-          xhr.send(JSON.stringify(body));
-      
-      } catch (error){
-        console.log('error fetching orders');
-      }
-  };
-
-
+  }, [fetchOrders]);
 
   const updateFirestore = async (orderId) =>{
     const body = [{
@@ -66,11 +60,9 @@ const Makeline = () =>{
   }
 
   const onOrderReady = (orderId) =>{
-    const orderToMove = ordersInPreparation.filter(order => order.orderId === orderId);
+    // const orderToMove = ordersInPreparation.filter(order => order.orderId === orderId);
     const updatedOrdersInPreparation = ordersInPreparation.filter(order => order.orderId !== orderId);
 
-    // console.log(updatedOrdersStatus);
-    // localStorage.removeItem('ordersStatus');
     setOrdersInPreparation(updatedOrdersInPreparation);
     updateFirestore(orderId);
   }

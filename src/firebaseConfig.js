@@ -2,9 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, signOut } from 'firebase/auth';
 import dotenv from 'dotenv';
-import firebase from "firebase/compat/app";
 import "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
 
  dotenv.config();
 
@@ -18,18 +16,14 @@ import { getFirestore } from "firebase/firestore";
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-
-
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-
 
 const userSignOut = () => {
     signOut(auth).then(() => {
         console.log('success')
     }).catch(error => console.log(error))
 }
-
 
 export default { app, analytics, userSignOut };
 export const auth = getAuth(app);

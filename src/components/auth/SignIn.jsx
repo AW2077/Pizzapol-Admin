@@ -3,17 +3,13 @@ import {auth} from "../../firebaseConfig"
 import {signInWithEmailAndPassword} from "firebase/auth"
 import { useSharedData } from "../../SharedDataProvider";
 
-
 const SignIn = () => {
-    const { storeName, updateStoreName } = useSharedData();
+    const { updateStoreName, setIsAuthenticated } = useSharedData();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // Define isAuthenticated state
-
 
     const getStoreData = async(storeId) => {
-    
         const body = {storeId: storeId};
         const xhr = new XMLHttpRequest();
             xhr.open("POST", "https://getdistrictname-ovvvjoo5mq-uc.a.run.app");
@@ -34,8 +30,6 @@ const SignIn = () => {
             xhr.send(JSON.stringify(body));
       }
       
-
-
     const handleSignIn = (e) => {
         e.preventDefault();
         signInWithEmailAndPassword(auth, email, password)

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import NavigationBar from './NavigationBar';
 import {getAuth, signOut } from 'firebase/auth';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +22,6 @@ class App extends Component {
         console.error('Error signing out:', error);
       });
   };
-
 
   // Funkcja obsługująca klikanie w NavigationBar
   handleLinkClick = (newComponent) => {
