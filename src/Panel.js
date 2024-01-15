@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import NavigationBar from './NavigationBar';
-import {getAuth, signOut } from 'firebase/auth';
 
 class App extends Component {
   constructor(props) {
@@ -9,19 +8,6 @@ class App extends Component {
       activeComponent: null, // Zaczynamy z pustym komponentem
     };
   }
-
-  handleSignOut = () => {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        // Perform any additional actions after sign-out if needed
-        console.log('User signed out successfully');
-      })
-      .catch((error) => {
-        // Handle sign-out errors if any
-        console.error('Error signing out:', error);
-      });
-  };
 
   // Funkcja obsługująca klikanie w NavigationBar
   handleLinkClick = (newComponent) => {
@@ -36,10 +22,6 @@ class App extends Component {
       <div>
         <NavigationBar handleLinkClick={this.handleLinkClick} />
         {ActiveComponent && <ActiveComponent />}
-
-        {this.state.activeComponent == null &&
-        <button onClick={this.handleSignOut}> Sign Out</button>
-        }
         </div>
     );
   }

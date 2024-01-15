@@ -29,16 +29,23 @@ const SignIn = () => {
             };
             xhr.send(JSON.stringify(body));
       }
+
+    const capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
       
     const handleSignIn = (e) => {
         e.preventDefault();
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                console.log('User Credential:', userCredential); // Check if this log appears
+                // console.log('User Credential:', userCredential); // Check if this log appears
                 // console.log('Store Id:', userCredential._tokenResponse.localId); // Check if this log appears
                 const storeId = userCredential._tokenResponse.localId;
                 getStoreData(storeId);
-                
+
+                const districtName = capitalizeFirstLetter(email.split('@')[0]);
+                localStorage.setItem('districtName', districtName);
+
                 setIsAuthenticated(true); // Set authenticated to true after successful sign-in
             })
             .catch((error) => {
