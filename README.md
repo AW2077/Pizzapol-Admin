@@ -1,6 +1,3 @@
-todo:
-cykliczne wywołania fetchOrders w makeline i dispatch
-konta kierowców pobierane z bazy danych
 
 # Getting Started with Create React App
 

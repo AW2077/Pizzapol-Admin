@@ -11,11 +11,9 @@ const NavigationBar = ({ handleLinkClick, handleSignOut }) => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
-        // Perform any additional actions after sign-out if needed
         console.log('User signed out successfully');
       })
       .catch((error) => {
-        // Handle sign-out errors if any
         console.error('Error signing out:', error);
       });
   };

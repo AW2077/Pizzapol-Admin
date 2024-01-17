@@ -1,6 +1,7 @@
 import React, { useState }  from 'react';
 import Modal from 'react-modal';
 import { useSharedData } from './SharedDataProvider';
+import "./Login.css"
 
 const Admin = () => {
   const { storeName } = useSharedData();
@@ -96,38 +97,42 @@ const Admin = () => {
 
   return (
     <div className="flex-container">
-      <button onClick={openModal}>Zmień godziny otwarcia</button>
+      <button onClick={openModal}>Change opening hours</button>
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Choose Opening and Closing Hours"
-        className={'modal'}
+        className={'modal search'}
+        overlayClassName="Overlay"
       >
         <h2>Choose Opening and Closing Hours</h2>
-        <label>Start Time:</label>
+        <h5>
+        <p><label>Start Time:</label>
         <input
           type="text"
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
           placeholder="HH:mm"
-        />
+        /></p>
 
-        <label>End Time:</label>
+        <p><label>End Time:</label>
         <input
           type="text"
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}
           placeholder="HH:mm"
-        />
+        /></p>
 
         {validationError && <p className="error-message">{validationError}</p>}
 
-        <button onClick={handleSave} disabled={loading}>
+        <p><button onClick={handleSave} disabled={loading}>
           {loading ? 'Saving...' : 'Save'}
         </button>
         <button onClick={closeModal} disabled={loading}>
           Cancel
         </button>
+        </p>
+        </h5>
       </Modal>
     </div>
   );

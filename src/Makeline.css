@@ -1,29 +1,9 @@
-button {
-    border:none;
-    display:inline-block;
-    padding:8px 16px;
-    vertical-align:middle;
-    overflow:hidden;
-    text-decoration:none;
-    color: var(--text);
-    background-color: var(--primary);
-    text-align:center;
-    cursor:pointer;
-    white-space:nowrap;
-    transition-duration: 0.4s;}
-
-button:hover {color:var(--text)!important;background-color:var(--secondary)!important}
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-top: 10px;
-  }
-  
-  th, td {
+th, td {
     text-align: left;
     padding: 10px;
-  }
+}
   
-  th {background-color:var(--accent);}
+th {background-color:var(--accent);}
 
-  tr:hover {background-color: var(--secondary);}
+tr:hover {background-color: var(--secondary);}
+

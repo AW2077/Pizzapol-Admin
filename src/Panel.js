@@ -5,16 +5,14 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeComponent: null, // Zaczynamy z pustym komponentem
+      activeComponent: null,
     };
   }
 
-  // Funkcja obsługująca klikanie w NavigationBar
   handleLinkClick = (newComponent) => {
     this.setState({ activeComponent: newComponent });
   };
 
-  // Renderowanie NavigationBar i aktywnego komponentu
   render() {
     const { activeComponent: ActiveComponent } = this.state;
 

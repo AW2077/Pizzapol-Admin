@@ -15,14 +15,14 @@ ul {
     font-family: 'Agbalumo';
     font-weight: 700;
     font-size: 4.210rem;
-    vertical-align: middle; /* Align with elements on the right */
-    line-height: 50px; /* Match the height of the elements on the right */
+    vertical-align: middle; 
+    line-height: 50px; 
 }
   
 .header-right {
     float:right;
-    display: flex; /* Align items within header-right using flexbox */
-    line-height: 32px; /* Match the height of the elements on the right */
+    display: flex; 
+    line-height: 32px; 
     
 }
 
